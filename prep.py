@@ -23,7 +23,7 @@ def translate(text, src, dst):
         return ts.text
     except Exception as e:
         print(e)
-        # raise e
+        raise e
     return None
 
 
