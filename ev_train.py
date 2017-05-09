@@ -1,42 +1,24 @@
 #!/usr/local/bin/python3
-import pickle, re
-from prep import Review, translate
+import pickle, re, string
+from prep import Review
+
+
+def clean_en(s):
+    exclude = set(string.punctuation)
+    return ''.join(ch for ch in s if ch not in exclude)
+
+
+def clean_cn(s):
+    return ''.join(re.findall(u'[\u4e00-\u9fff]+', s))
 
 
 if __name__ == '__main__':
-    trainfile = open('train1.pkl', 'rb')
+    trainfile = open('train2.pkl', 'rb')
     train_en = pickle.load(trainfile)
     train_cn = pickle.load(trainfile)
     trainfile.close()
-    count = 0
-    # for review in train_en:
-    #     if review.cn_text is None:
-    #         print(len(review.en_text))
-    #         sentences = re.split('\n', review.en_text)
-    #         review.cn_text = ''
-    #         for s in sentences:
-    #             if s is '' or s.isspace():
-    #                 continue
-    #             ts = translate(s, 'en', 'zh-CN')
-    #             if ts is None:
-    #                 review.cn_text = None
-    #                 break
-    #             else:
-    #                 review.cn_text += ts
+    print(train_en[0].en_text)
+    print(clean_en(train_en[0].en_text))
 
-    for review in train_en:
-        if review.hasNone():
-            print(review.en_text)
-            ts = translate(review.en_text, 'en', 'zh-CN')
-            count += 1
-    for review in train_cn:
-        if review.hasNone():
-            count += 1
-    print(count)
-    output = open('train1.pkl', 'wb')
-    pickle.dump(train_en, output)
-    pickle.dump(train_cn, output)
-    output.close()
-    # print(len(train_en))
-    # print(len(train_cn))
-    # print(train_en[0].en_text)
+    print(train_en[0].cn_text)
+    print(clean_cn(train_en[0].cn_text))
