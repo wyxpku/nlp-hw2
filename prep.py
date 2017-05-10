@@ -83,7 +83,7 @@ class Review:
 def load_review(fname, src='en'):
     reviews = []
     for item in ET.parse(fname).getroot():
-        print(item[0].text)
+        # print(item[0].text)
         reviews.append(Review(item, src))
     return reviews
 
@@ -121,13 +121,13 @@ def load_test():
 if __name__ == '__main__':
 
     # print(translate('你好啊', src='zh-CN', dst='en'))
-    # exit(0)
-    train_en = load_en()
-    train_cn = load_cn()
+    # # exit(0)
+    # train_en = load_en()
+    # train_cn = load_cn()
     test = load_test()
 
-    print('Labled EN review: %d' % len(train_en))
-    print('Labled CN review: %d' % len(train_cn))
+    # print('Labled EN review: %d' % len(train_en))
+    # print('Labled CN review: %d' % len(train_cn))
     print('Labled test review: %d' % len(test))
     # trainslate reviews
 
@@ -142,10 +142,10 @@ if __name__ == '__main__':
     #     print('Translating EN: %d of %d' % (i + 1, en_num))
     #     train_en[i].translate('en')
 
-    output = open('train.pkl', 'wb')
-    pickle.dump(train_en, output)
-    pickle.dump(train_cn, output)
-    output.close()
+    # output = open('train.pkl', 'wb')
+    # pickle.dump(train_en, output)
+    # pickle.dump(train_cn, output)
+    # output.close()
     test_num = len(test)
 
 
