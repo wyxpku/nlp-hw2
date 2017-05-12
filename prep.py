@@ -15,6 +15,27 @@ def random_sleep():
     time.sleep(t)
 
 
+def trans(text, src, dst):
+    if text is None:
+        return ''
+    ifname = 'input.txt'
+    ofname = 'output.txt'
+    if os.path.exists(ifname):
+        os.remove(ifname)
+    if os.path.exists(ofname):
+        os.remove(ofname)
+    ifile = open(ifname, 'w')
+    ifile.write(text)
+    ifile.close()
+    os.system('./trans -b %s:%s -i %s -o %s' % (src, dst, ifname, ofname))
+
+    ofile = open(ofname, 'r')
+    text = ofile.read()
+    ofile.close()
+    print(text)
+    return text
+
+
 def translate(text, src, dst):
     random_sleep()
     translator = Translator(service_urls=[
@@ -25,16 +46,22 @@ def translate(text, src, dst):
         return ts.text
     except Exception as e:
         print(e)
-        return None
+        # print(text)
+        # raise(e)
+        # return None
         print('--------------------')
         print('FUCK OFF: From %s to %s' % (src, dst))
         print(text)
-        fname = input('Please input filename: ')
-        while not os.path.exists(fname):
-            fname = input('Please input filename: ')
-        tfile = open(fname)
-        text = tfile.read()
-        tfile.close()
+        print('Trying mtranslate')
+        text = trans(text, src, dst)
+        # fname = input('Please input filename: ')
+        # while not os.path.exists(fname):
+        #     fname = input('Please input filename: ')
+        # tfile = open(fname)
+        # text = tfile.read()
+        # tfile.close()
+        print('-------------------')
+        print(text)
         return text
     return None
 
@@ -68,6 +95,7 @@ class Review:
     def translate(self, src):
         if src == 'en':
             self.cn_summary = translate(self.en_summary, 'en', 'zh-CN')
+            print(self.cn_summary)
             self.cn_text = translate(self.en_text, 'en', 'zh-CN')
         else:
             self.en_summary = translate(self.cn_summary, 'zh-CN', 'en')

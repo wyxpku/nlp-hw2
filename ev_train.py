@@ -1,24 +1,24 @@
 #!/usr/local/bin/python3
 import pickle, re, string
-from prep import Review
-
-
-def clean_en(s):
-    exclude = set(string.punctuation)
-    return ''.join(ch for ch in s if ch not in exclude)
-
-
-def clean_cn(s):
-    return ''.join(re.findall(u'[\u4e00-\u9fff]+', s))
+from prep import Review, trans
 
 
 if __name__ == '__main__':
-    trainfile = open('train2.pkl', 'rb')
+    trainfile = open('test.pkl', 'rb')
+    test = pickle.load(trainfile)
+    trainfile.close()
+    trainfile = open('train.pkl', 'rb')
     train_en = pickle.load(trainfile)
     train_cn = pickle.load(trainfile)
     trainfile.close()
-    print(train_en[0].en_text)
-    print(clean_en(train_en[0].en_text))
-
-    print(train_en[0].cn_text)
-    print(clean_cn(train_en[0].cn_text))
+    cnt = 0
+    for item in test:
+        if item.hasNone():
+            cnt += 1
+    for item in train_en:
+        if item.hasNone():
+            cnt += 1
+    for item in train_cn:
+        if item.hasNone():
+            cnt += 1
+    print(cnt)
